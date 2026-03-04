@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDEL TIKET | Pemesanan Tiket Online</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Quicksand", sans-serif;
+            background: #f0f5fa;
+            color: #2d3e50;
+            line-height: 1.6;
+        }
+        /* Navbar */
+        .navbar {
+            background: white;
+            padding: 1rem 5%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2b6c94;
+            cursor: pointer;
+        }
+        .logo i {
+            color: #f39c12;
+            margin-right: 5px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #2d3e50;
+            font-weight: 600;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .nav-links a:hover {
+            color: #2b6c94;
+        }
+        .btn-outline {
+            border: 2px solid #2b6c94;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            color: #2b6c94;
+            font-weight: 600;
+            transition: 0.2s;
+            background: transparent;
+            cursor: pointer;
+        }
+        .btn-outline:hover {
+            background: #2b6c94;
+            color: white;
+        }
+        /* Hero */
+        .hero {
+            background: linear-gradient(rgba(0,40,70,0.6), rgba(0,40,70,0.6)), url("Raja Ampat.jpg") center/cover no-repeat;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 3rem 1rem;
+        }
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            min-height: 120px;
+        }
+        .cursor {
+            display: inline-block;
+            width: 4px;
+            margin-left: 2px;
+            background-color: #f39c12;
+            animation: blink 0.7s infinite;
+        }
+        @keyframes blink {
+            0%,50% { opacity:1; }
+            51%,100% { opacity:0; }
+        }
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .search-box {
+            background: white;
+            border-radius: 60px;
+            padding: 0.5rem 0.5rem 0.5rem 2rem;
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .search-box input {
+            border: none;
+            padding: 0.8rem 0;
+            font-size: 1rem;
+            min-width: 250px;
+            outline: none;
+        }
+        .search-box button {
+            background: #f39c12;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .search-box button:hover {
+            background: #e67e22;
+        }
+        /* Section Title */
+        .section-title {
+            text-align: center;
+            margin: 3rem 0 2rem;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1e3c5c;
+            position: relative;
+        }
+        .section-title:after {
+            content: "";
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: #f39c12;
+            margin: 0.8rem auto;
+            border-radius: 2px;
+        }
+        /* Grid Destinasi */
+        .destinasi-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            border-color: #f39c12;
+        }
+        .card-img {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding: 12px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 2px 5px black;
+        }
+        .card-img[data-id="1"] { background: linear-gradient(rgba(0,40,70,0.6), rgba(0,40,70,0.6)), url("Kuta Beach in Lombok.jpg") center/cover no-repeat; }
+        .card-img[data-id="2"] { background: linear-gradient(rgba(0,40,70,0.6), rgba(0,40,70,0.6)), url("mount bromo, java island - indonesia.jpg") center/cover no-repeat; }
+        .card-img[data-id="3"] { background: linear-gradient(rgba(0,40,70,0.6), rgba(0,40,70,0.6)), url("Borobudur.jpg") center/cover no-repeat; }
+        .card-img[data-id="4"] { background: linear-gradient(rgba(0,40,70,0.6), rgba(0,40,70,0.6)), url("Museum Nasional, Jakarta.jpg") center/cover no-repeat; }
+        .card-img[data-id="5"] { background: linear-gradient(rgba(0,40,70,0.6), rgba(0,40,70,0.6)), url("download.jpg") center/cover no-repeat; }
+        .card-img[data-id="6"] { background: linear-gradient(rgba(0,40,70,0.6), rgba(0,40,70,0.6)), url("Raja Ampat.jpg") center/cover no-repeat; }
+        .rating {
+            background: rgba(0,0,0,0.6);
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+        .card-content {
+            padding: 20px;
+        }
+        .card-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            color: #1e3c5c;
+        }
+        .location {
+            color: #6c7a89;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+        .location i {
+            color: #f39c12;
+            width: 20px;
+        }
+        .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2b6c94;
+            margin: 10px 0;
+        }
+        .price small {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #7f8c8d;
+        }
+        .btn-card {
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 10px 0;
+            width: 100%;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 10px;
+        }
+        .btn-card:hover {
+            background: #e67e22;
+        }
+        /* Panel Pemesanan */
+        .order-panel {
+            background: white;
+            border-radius: 30px 30px 0 0;
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.1);
+            padding: 3rem 5%;
+            margin-top: 4rem;
+        }
+        .panel-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #1e3c5c;
+        }
+        .order-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .order-form .form-group {
+            margin-bottom: 20px;
+        }
+        .order-form label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+            color: #2d3e50;
+        }
+        .order-form input, .order-form select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e0e8f0;
+            border-radius: 18px;
+            font-size: 1rem;
+            transition: 0.2s;
+            outline: none;
+            background: #f9fcff;
+        }
+        .order-form input:focus, .order-form select:focus {
+            border-color: #f39c12;
+        }
+        .checkbox-group {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 400;
+            cursor: pointer;
+        }
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #f39c12;
+        }
+        .order-summary {
+            background: #f6fafd;
+            border-radius: 30px;
+            padding: 30px;
+            border: 1px solid #d0e0eb;
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            border-bottom: 1px dashed #b0c4d9;
+            padding-bottom: 10px;
+        }
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e3c5c;
+            margin: 25px 0 20px;
+        }
+        .btn-order {
+            background: #2b6c94;
+            color: white;
+            border: none;
+            padding: 16px;
+            width: 100%;
+            border-radius: 60px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 20px rgba(43,108,148,0.3);
+        }
+        .btn-order:hover {
+            background: #1e4f6e;
+            transform: scale(1.02);
+        }
+        .selected-dest-info {
+            background: #fff7e6;
+            border-radius: 18px;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 6px solid #f39c12;
+        }
+        /* Paket Section */
+        .paket-section {
+            background: white;
+            padding: 3rem 5%;
+            margin-top: 2rem;
+        }
+        .paket-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .paket-card {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .paket-card i {
+            font-size: 2.5rem;
+            color: #f39c12;
+            margin-bottom: 1rem;
+        }
+        /* Kontak Section */
+        .kontak-section {
+            background: #1e3c5c;
+            color: white;
+            padding: 3rem 5%;
+        }
+        .kontak-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        .kontak-item i {
+            margin-right: 10px;
+            color: #f39c12;
+        }
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 200;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.show {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 30px;
+            max-width: 450px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #aaa;
+        }
+        .close-modal:hover {
+            color: #333;
+        }
+        .modal-dest-img {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(145deg, #0099f7, #3b9c9c);
+            border-radius: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            text-shadow: 0 2px 5px black;
+        }
+        .modal-dest-desc {
+            margin: 15px 0;
+            color: #2d3e50;
+        }
+        .modal-form input, .modal-form select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 2px solid #e0e8f0;
+            border-radius: 15px;
+            font-size: 1rem;
+        }
+        .modal-form label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        .modal-btn {
+            background: #2b6c94;
+            color: white;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+        /* Toast */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background: #2b6c94;
+            color: white;
+            text-align: center;
+            border-radius: 50px;
+            padding: 16px;
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 300;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+        @media (max-width:800px) {
+            .order-grid { grid-template-columns:1fr; }
+            .hero-content h1 { font-size:2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo" id="logoHome"><i class="fas fa-compass"></i> DDELTIKET!</div>
+        <div class="nav-links">
+            <a id="navBeranda">Beranda</a>
+            <a id="navDestinasi">Destinasi</a>
+            <a id="navPaket">Paket</a>
+            <a id="navKontak">Kontak</a>
+            <a class="btn-outline" id="navMasuk"><i class="fas fa-user"></i> Masuk</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="beranda">
+        <div class="hero-content">
+            <h1><span id="typing-text"></span><span class="cursor">|</span></h1>
+            <p>Liburan murah, seru, dan destinasi bagus? di DDELTIKET aja!</p>
+            <div class="search-box">
+                <input type="text" placeholder="Cari destinasi atau aktivitas..." id="searchInput">
+                <button id="searchBtn"><i class="fas fa-search"></i> Cari</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destinasi Populer -->
+    <h2 class="section-title" id="destinasi">Destinasi Populer</h2>
+    <div class="destinasi-container" id="destinasiContainer"></div>
+
+    <!-- Paket Wisata -->
+    <section class="paket-section" id="paket">
+        <h2 class="section-title">Paket Wisata Spesial</h2>
+        <div class="paket-container" id="paketContainer"></div>
+    </section>
+
+    <!-- Panel Pemesanan Utama -->
+    <section class="order-panel" id="orderPanel">
+        <div class="panel-title"><i class="fas fa-ticket-alt" style="color:#f39c12"></i> Formulir Pemesanan Tiket</div>
+        <div class="order-grid">
+            <div class="order-form">
+                <div class="form-group">
+                    <label>Pilih Destinasi <span style="color:red">*</span></label>
+                    <select id="destinasiSelect" required>
+                        <option value="">-- Pilih destinasi --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Tanggal Kunjungan</label>
+                    <input type="date" id="visitDate" min="">
+                </div>
+                <div class="form-group">
+                    <label>Jumlah Tiket</label>
+                    <input type="number" id="ticketQty" min="1" value="1">
+                </div>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="guideCheck"> Pemandu Wisata (+Rp75.000)</label>
+                    <label><input type="checkbox" id="mealCheck"> Makan Siang (+Rp50.000)</label>
+                </div>
+                <div class="selected-dest-info" id="selectedDestInfo">
+                    <i class="fas fa-info-circle" style="color:#f39c12"></i> Belum ada destinasi dipilih
+                </div>
+            </div>
+            <div class="order-summary">
+                <h3 style="margin-bottom:20px"><i class="fas fa-receipt"></i> Ringkasan Pemesanan</h3>
+                <div class="summary-item"><span>Destinasi:</span> <span id="summaryDest">-</span></div>
+                <div class="summary-item"><span>Harga tiket:</span> <span id="summaryPrice">Rp 0</span></div>
+                <div class="summary-item"><span>Jumlah tiket:</span> <span id="summaryQty">-</span></div>
+                <div class="summary-item"><span>Pemandu:</span> <span id="summaryGuide">Tidak</span></div>
+                <div class="summary-item"><span>Makan Siang:</span> <span id="summaryMeal">Tidak</span></div>
+                <div class="summary-total"><span>Total</span> <span id="totalAmount">Rp 0</span></div>
+                <button class="btn-order" id="checkoutBtn"><i class="fas fa-check-circle"></i> Pesan Sekarang</button>
+                <p style="font-size:0.9rem; margin-top:15px; color:#5d6d7e"><i class="fas fa-shield-alt"></i> Pembayaran aman & mudah</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kontak -->
+    <section class="kontak-section" id="kontak">
+        <div class="kontak-container">
+            <div class="kontak-item"><i class="fas fa-map-marker-alt"></i> Jl. nakula kec. tegal timur</div>
+            <div class="kontak-item"><i class="fas fa-phone"></i> +62 851 6586 8864</div>
+            <div class="kontak-item"><i class="fas fa-envelope"></i> info@ddeltiket.id</div>
+            <div class="kontak-item"><i class="fab fa-instagram"></i> @ddeltiket</div>
+        </div>
+    </section>
+
+    <!-- Modal Detail Destinasi -->
+    <div id="destinasiModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <div id="modalDestImage" class="modal-dest-img">🏖️</div>
+            <h2 id="modalDestTitle">Pantai Kuta</h2>
+            <p id="modalDestLocation"><i class="fas fa-map-marker-alt"></i> Bali</p>
+            <div id="modalDestDesc" class="modal-dest-desc"></div>
+            <hr>
+            <h3>Pesan Tiket Sekarang</h3>
+            <div class="modal-form">
+                <label>Tanggal Kunjungan</label>
+                <input type="date" id="modalDate" min="">
+                <label>Jumlah Tiket</label>
+                <input type="number" id="modalQty" min="1" value="1">
+                <label><input type="checkbox" id="modalGuide"> Pemandu Wisata (+Rp75.000)</label>
+                <label><input type="checkbox" id="modalMeal"> Makan Siang (+Rp50.000)</label>
+                <button class="modal-btn" id="modalPesanBtn">Pesan Sekarang</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Login -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeLogin">&times;</span>
+            <h2><i class="fas fa-user-lock"></i> Masuk</h2>
+            <div class="modal-form">
+                <input type="email" id="loginEmail" placeholder="Email">
+                <input type="password" id="loginPassword" placeholder="Kata Sandi">
+                <button class="modal-btn" id="loginBtn">Masuk</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast">Pesan berhasil ditambahkan</div>
+
+    <script>
+        // Data Destinasi (dengan deskripsi)
+        const destinations = [
+            { id:1, name:"Pantai Kuta", location:"Bali", price:50000, rating:4.8, imgLabel:"🏖️", description:"Nikmati keindahan sunset dan ombak yang mempesona di Pantai Kuta. Tempat sempurna untuk berselancar atau bersantai." },
+            { id:2, name:"Gunung Bromo", location:"Jawa Timur", price:75000, rating:4.9, imgLabel:"🌋", description:"Saksikan matahari terbit yang spektakuler di atas lautan pasir Gunung Bromo. Pengalaman yang tak terlupakan." },
+            { id:3, name:"Candi Borobudur", location:"Jawa Tengah", price:40000, rating:4.7, imgLabel:"🛕", description:"Candi Buddha terbesar di dunia dengan relief yang indah. Warisan budaya dunia yang memukau." },
+            { id:4, name:"Museum Nasional", location:"Jakarta", price:25000, rating:4.5, imgLabel:"🏛️", description:"Koleksi sejarah dan budaya Indonesia dari berbagai masa. Cocok untuk wisata edukasi." },
+            { id:5, name:"Taman Safari", location:"Bogor", price:95000, rating:4.8, imgLabel:"🦁", description:"Taman safari dengan satwa liar dari seluruh dunia. Bisa memberi makan hewan dan pertunjukan satwa." },
+            { id:6, name:"Raja Ampat", location:"Papua Barat", price:150000, rating:5.0, imgLabel:"🐠", description:"Surga bawah laut dengan keanekaragaman hayati tertinggi di dunia. Wajib dikunjungi pecinta snorkeling dan diving." }
+        ];
+
+        // Data Paket
+        const paketWisata = [
+            { nama:"Paket Keluarga", harga:350000, icon:"fa-users", fitur:"Tiket 4 orang + makan siang" },
+            { nama:"Paket Romantis", harga:275000, icon:"fa-heart", fitur:"Tiket 2 orang + makan malam" },
+            { nama:"Paket Group", harga:1250000, icon:"fa-people-group", fitur:"Tiket 10 orang + bus + guide" },
+            { nama:"Paket Backpacker", harga:150000, icon:"fa-backpack", fitur:"Tiket + transport lokal" }
+        ];
+
+        // Elemen DOM
+        const destinasiContainer = document.getElementById('destinasiContainer');
+        const destinasiSelect = document.getElementById('destinasiSelect');
+        const visitDate = document.getElementById('visitDate');
+        const ticketQty = document.getElementById('ticketQty');
+        const guideCheck = document.getElementById('guideCheck');
+        const mealCheck = document.getElementById('mealCheck');
+        const summaryDest = document.getElementById('summaryDest');
+        const summaryPrice = document.getElementById('summaryPrice');
+        const summaryQty = document.getElementById('summaryQty');
+        const summaryGuide = document.getElementById('summaryGuide');
+        const summaryMeal = document.getElementById('summaryMeal');
+        const totalAmount = document.getElementById('totalAmount');
+        const selectedDestInfo = document.getElementById('selectedDestInfo');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const toast = document.getElementById('toast');
+        const paketContainer = document.getElementById('paketContainer');
+        const modal = document.getElementById('destinasiModal');
+        const closeModal = document.getElementById('closeModal');
+        const loginModal = document.getElementById('loginModal');
+        const closeLogin = document.getElementById('closeLogin');
+        const navMasuk = document.getElementById('navMasuk');
+        const navBeranda = document.getElementById('navBeranda');
+        const navDestinasi = document.getElementById('navDestinasi');
+        const navPaket = document.getElementById('navPaket');
+        const navKontak = document.getElementById('navKontak');
+        const logoHome = document.getElementById('logoHome');
+        const searchBtn = document.getElementById('searchBtn');
+        const searchInput = document.getElementById('searchInput');
+
+        let selectedDest = null; // destinasi yang dipilih di panel utama
+
+        // Render kartu destinasi
+        function renderCards() {
+            destinasiContainer.innerHTML = '';
+            destinations.forEach(dest => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.setAttribute('data-id', dest.id);
+
+                const imgDiv = document.createElement('div');
+                imgDiv.className = 'card-img';
+                imgDiv.setAttribute('data-id', dest.id);
+                imgDiv.innerHTML = `<span class="rating"><i class="fas fa-star" style="color:gold;"></i> ${dest.rating}</span> <span style="font-size:2rem;">${dest.imgLabel}</span>`;
+
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'card-content';
+                contentDiv.innerHTML = `
+                    <h3>${dest.name}</h3>
+                    <div class="location"><i class="fas fa-map-marker-alt"></i> ${dest.location}</div>
+                    <div class="price">Rp ${dest.price.toLocaleString('id-ID')} <small>/ tiket</small></div>
+                    <button class="btn-card" data-id="${dest.id}"><i class="fas fa-shopping-cart"></i> Pesan Sekarang</button>
+                `;
+
+                card.appendChild(imgDiv);
+                card.appendChild(contentDiv);
+
+                // Klik card (selain tombol) -> pilih destinasi di panel utama
+                card.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('btn-card')) return;
+                    setSelectedDest(dest);
+                    document.getElementById('orderPanel').scrollIntoView({ behavior: 'smooth' });
+                });
+
+                // Tombol Pesan Sekarang -> buka modal detail
+                const btn = card.querySelector('.btn-card');
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openDetailModal(dest);
+                });
+
+                destinasiContainer.appendChild(card);
+            });
+        }
+
+        // Render paket wisata
+        function renderPaket() {
+            paketContainer.innerHTML = '';
+            paketWisata.forEach(paket => {
+                const card = document.createElement('div');
+                card.className = 'paket-card';
+                card.innerHTML = `
+                    <i class="fas ${paket.icon}"></i>
+                    <h3>${paket.nama}</h3>
+                    <p>${paket.fitur}</p>
+                    <div style="font-size:1.5rem; color:#2b6c94; margin:1rem 0;">Rp ${paket.harga.toLocaleString('id-ID')}</div>
+                    <button class="btn-card" style="width:auto; padding:0.5rem 1.5rem;">Lihat Detail</button>
+                `;
+                card.querySelector('button').addEventListener('click', () => {
+                    showToast(`Paket ${paket.nama} akan segera hadir!`, false);
+                });
+                paketContainer.appendChild(card);
+            });
+        }
+
+        // Isi dropdown
+        function populateSelect() {
+            destinasiSelect.innerHTML = '<option value="">-- Pilih destinasi --</option>';
+            destinations.forEach(dest => {
+                const option = document.createElement('option');
+                option.value = dest.id;
+                option.textContent = `${dest.name} - Rp ${dest.price.toLocaleString('id-ID')}`;
+                destinasiSelect.appendChild(option);
+            });
+        }
+
+        // Set destinasi di panel utama
+        function setSelectedDest(dest) {
+            selectedDest = dest;
+            destinasiSelect.value = dest.id;
+            updateSummaryAndInfo();
+        }
+
+        // Update ringkasan panel utama
+        function updateSummaryAndInfo() {
+            if (!selectedDest) {
+                selectedDestInfo.innerHTML = `<i class="fas fa-info-circle" style="color:#f39c12;"></i> Belum ada destinasi dipilih.`;
+                summaryDest.textContent = '-';
+                summaryPrice.textContent = 'Rp 0';
+                summaryQty.textContent = '-';
+                totalAmount.textContent = 'Rp 0';
+                return;
+            }
+            const qty = parseInt(ticketQty.value) || 1;
+            const guidePrice = guideCheck.checked ? 75000 : 0;
+            const mealPrice = mealCheck.checked ? 50000 : 0;
+            const total = selectedDest.price * qty + guidePrice + mealPrice;
+            selectedDestInfo.innerHTML = `<i class="fas fa-check-circle" style="color:#27ae60;"></i> <strong>${selectedDest.name}</strong> (${selectedDest.location})<br>Harga tiket: Rp ${selectedDest.price.toLocaleString('id-ID')} / tiket`;
+            summaryDest.textContent = selectedDest.name;
+            summaryPrice.textContent = `Rp ${selectedDest.price.toLocaleString('id-ID')}`;
+            summaryQty.textContent = qty + ' tiket';
+            summaryGuide.textContent = guideCheck.checked ? 'Ya (+Rp75.000)' : 'Tidak';
+            summaryMeal.textContent = mealCheck.checked ? 'Ya (+Rp50.000)' : 'Tidak';
+            totalAmount.textContent = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        // Buka modal detail destinasi
+        function openDetailModal(dest) {
+            document.getElementById('modalDestTitle').textContent = dest.name;
+            document.getElementById('modalDestLocation').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${dest.location}`;
+            document.getElementById('modalDestDesc').textContent = dest.description;
+            document.getElementById('modalDestImage').innerHTML = dest.imgLabel;
+            // Set default tanggal
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('modalDate').min = today;
+            document.getElementById('modalDate').value = today;
+            document.getElementById('modalQty').value = 1;
+            document.getElementById('modalGuide').checked = false;
+            document.getElementById('modalMeal').checked = false;
+            // Simpan destinasi ke dataset modal
+            modal.dataset.destId = dest.id;
+            modal.classList.add('show');
+        }
+
+        // Toast
+        function showToast(message, isError = false) {
+            toast.textContent = message;
+            toast.style.backgroundColor = isError ? '#c0392b' : '#2b6c94';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Set minimal tanggal
+        function setMinDate() {
+            const today = new Date().toISOString().split('T')[0];
+            visitDate.min = today;
+            visitDate.value = today;
+        }
+
+        // Efek mengetik
+        const typingElement = document.getElementById('typing-text');
+        const phrases = [
+            "Bingung Mau Liburan Kemana?",
+            "Di DDELTIKET Aja!",
+            "Pesan Tiket Mudah & Cepat",
+            "Nikmati Liburan Impianmu dengan Harga Terbaik",
+            "Temukan Destinasi Favoritmu disini!"
+        ];
+        let phraseIndex = 0, charIndex = 0, isDeleting = false, typingSpeed = 100;
+        function typeEffect() {
+            const currentPhrase = phrases[phraseIndex];
+            if (isDeleting) {
+                typingElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+                typingSpeed = 50;
+            } else {
+                typingElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+                typingSpeed = 150;
+            }
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                isDeleting = true;
+                typingSpeed = 1000;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typingSpeed = 500;
+            }
+            setTimeout(typeEffect, typingSpeed);
+        }
+
+        // Inisialisasi event listeners
+        function initEventListeners() {
+            // Dropdown panel utama
+            destinasiSelect.addEventListener('change', function(e) {
+                const destId = parseInt(e.target.value);
+                if (destId) setSelectedDest(destinations.find(d => d.id === destId));
+                else { selectedDest = null; updateSummaryAndInfo(); }
+            });
+
+            ticketQty.addEventListener('input', function() { if (this.value < 1) this.value = 1; updateSummaryAndInfo(); });
+            guideCheck.addEventListener('change', updateSummaryAndInfo);
+            mealCheck.addEventListener('change', updateSummaryAndInfo);
+
+            // Tombol pesan di panel utama
+            checkoutBtn.addEventListener('click', function() {
+                if (!selectedDest) { showToast('❌ Pilih destinasi terlebih dahulu!', true); return; }
+                if (!visitDate.value) { showToast('⚠️ Isi tanggal kunjungan', true); return; }
+                const qty = parseInt(ticketQty.value);
+                const total = selectedDest.price * qty + (guideCheck.checked?75000:0) + (mealCheck.checked?50000:0);
+                showToast(`✅ Tiket untuk ${selectedDest.name} berhasil dipesan! Total: Rp ${total.toLocaleString('id-ID')}`, false);
+            });
+
+            // Modal detail
+            closeModal.addEventListener('click', () => modal.classList.remove('show'));
+            window.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
+
+            document.getElementById('modalPesanBtn').addEventListener('click', function() {
+                const destId = parseInt(modal.dataset.destId);
+                const dest = destinations.find(d => d.id === destId);
+                const date = document.getElementById('modalDate').value;
+                const qty = parseInt(document.getElementById('modalQty').value);
+                const guide = document.getElementById('modalGuide').checked;
+                const meal = document.getElementById('modalMeal').checked;
+                if (!date) { showToast('Pilih tanggal kunjungan', true); return; }
+                const total = dest.price * qty + (guide?75000:0) + (meal?50000:0);
+                showToast(`✅ Pemesanan via modal: ${dest.name} - Total Rp ${total.toLocaleString('id-ID')}`, false);
+                modal.classList.remove('show');
+            });
+
+            // Login modal
+            navMasuk.addEventListener('click', () => loginModal.classList.add('show'));
+            closeLogin.addEventListener('click', () => loginModal.classList.remove('show'));
+            window.addEventListener('click', (e) => { if (e.target === loginModal) loginModal.classList.remove('show'); });
+            document.getElementById('loginBtn').addEventListener('click', () => {
+                const email = document.getElementById('loginEmail').value;
+                const pass = document.getElementById('loginPassword').value;
+                if (email && pass) {
+                    showToast('Login berhasil (simulasi)', false);
+                    loginModal.classList.remove('show');
+                } else showToast('Isi email dan password', true);
+            });
+
+            // Smooth scroll
+            const scrollTo = (id) => document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            navBeranda.addEventListener('click', () => scrollTo('beranda'));
+            navDestinasi.addEventListener('click', () => scrollTo('destinasi'));
+            navPaket.addEventListener('click', () => scrollTo('paket'));
+            navKontak.addEventListener('click', () => scrollTo('kontak'));
+            logoHome.addEventListener('click', () => scrollTo('beranda'));
+
+            // Search
+            searchBtn.addEventListener('click', () => {
+                const query = searchInput.value.trim();
+                if (query) showToast(`Mencari: "${query}"`, false);
+                else showToast('Masukkan kata kunci', true);
+            });
+        }
+
+        // Jalankan semua
+        renderCards();
+        renderPaket();
+        populateSelect();
+        setMinDate();
+        initEventListeners();
+        setTimeout(typeEffect, 1000);
+    </script>
+</body>
+</html>
